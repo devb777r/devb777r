@@ -67,7 +67,7 @@ function App() {
           <div className="flex items-center justify-between max-w-2xl mx-auto">
             <div className="flex items-center gap-3">
               <div className="bg-white dark:bg-slate-900 p-0.5 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800">
-                <img src="/logo.png" className="w-9 h-9 object-contain rounded-lg" alt="Logo" />
+                <img src="logo.png" className="w-9 h-9 object-contain rounded-lg" alt="Logo" />
               </div>
               <h1 className="text-xl font-bold tracking-tight text-slate-800 dark:text-slate-100">شركة الحرمين</h1>
             </div>
