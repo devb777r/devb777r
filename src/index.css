@@ -1,0 +1,65 @@
+@import "tailwindcss";
+@custom-variant dark (&:is(.dark *));
+
+@theme {
+  --font-sans: "Inter", "Tajawal", system-ui, sans-serif;
+  
+  --color-primary-50: #eff6ff;
+  --color-primary-100: #dbeafe;
+  --color-primary-500: #3b82f6;
+  --color-primary-600: #2563eb;
+  
+  --color-secondary-50: #ecfeff;
+  --color-secondary-500: #06b6d4;
+  --color-secondary-600: #0891b2;
+}
+
+@layer base {
+  body {
+    @apply text-slate-800 antialiased;
+    font-family: var(--font-sans);
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none;    /* Firefox */
+  }
+  
+  body::-webkit-scrollbar {
+    display: none; /* Chrome, Safari and Opera */
+  }
+}
+
+@layer utilities {
+  .glass-panel {
+    @apply bg-white/70 backdrop-blur-md border border-white/20 shadow-sm dark:bg-slate-950/80 dark:border-slate-800;
+  }
+  
+  .liquid-glass {
+    @apply bg-white/40 dark:bg-slate-900/40 backdrop-blur-2xl border border-white/20 dark:border-slate-800/50 shadow-[0_8px_32px_0_rgba(31,38,135,0.07)] dark:shadow-[0_8px_32px_0_rgba(0,0,0,0.3)];
+  }
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
+
+.custom-bg-pulse {
+  background: linear-gradient(135deg, #bfdbfe 0%, #ffffff 50%, #bae6fd 100%);
+  background-size: 300% 300%;
+  background-attachment: fixed;
+  animation: gradient-pulse 8s ease infinite;
+}
+
+.dark .custom-bg-pulse {
+  background: linear-gradient(135deg, #020617 0%, #070a13 50%, #0f172a 100%);
+  background-attachment: fixed;
+}
+
+@keyframes gradient-pulse {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
