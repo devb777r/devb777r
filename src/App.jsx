@@ -10,6 +10,7 @@ function App() {
   const [activeTab, setActiveTab] = useState('inventory'); // 'inventory', 'add'
   const [isDarkMode, setIsDarkMode] = useState(() => localStorage.getItem('darkMode') === 'true');
   const [user, setUser] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
   const [showLogin, setShowLogin] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [viewMode, setViewModeState] = useState(() => localStorage.getItem('viewMode') || 'list'); // 'list', 'grid'
@@ -37,10 +38,12 @@ function App() {
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       setUser(session?.user ?? null);
+      setIsLoading(false);
     });
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       setUser(session?.user ?? null);
+      setIsLoading(false);
     });
 
     return () => subscription.unsubscribe();
@@ -83,7 +86,21 @@ function App() {
     setActiveTab('inventory');
   };
 
-  const isAdmin = user !== null;
+  const isAdmin = user?.email === 'test@gmail.com';
+
+  // Show loading spinner while session resolves
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-white dark:bg-slate-950">
+        <div className="w-10 h-10 border-4 border-primary-500/30 border-t-primary-500 rounded-full animate-spin" />
+      </div>
+    );
+  }
+
+  // Show fullscreen login gate if not authenticated
+  if (!user) {
+    return <Login onClose={() => {}} isGate={true} />;
+  }
 
   return (
     <div className="custom-bg-pulse min-h-screen pb-20 font-sans text-slate-800 dark:text-slate-100 transition-colors duration-500">
