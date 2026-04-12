@@ -86,7 +86,7 @@ function App() {
     setActiveTab('inventory');
   };
 
-  const isAdmin = user?.email === 'test@gmail.com';
+  const isAdmin = user?.email === 'admin@admin';
 
   // Show loading spinner while session resolves
   if (isLoading) {
@@ -299,7 +299,7 @@ function App() {
           </button>
 
           {/* Login/Logout Tab */}
-          {!isAdmin ? (
+          {!user ? (
             <button 
               onClick={() => setShowLogin(true)}
               className="flex flex-col items-center justify-center w-20 py-2 rounded-2xl transition-all text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300"
