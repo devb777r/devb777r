@@ -66,7 +66,7 @@ export default function Login({ onClose, isGate = false }) {
                 type="email" required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="admin@admin.com"
+                placeholder="admin@example.com"
                 className="w-full bg-slate-50 dark:bg-slate-800/50 border-2 border-slate-100 dark:border-slate-700 focus:border-primary-500 dark:focus:border-primary-400 rounded-2xl py-4 pl-11 pr-4 text-sm font-bold text-slate-800 dark:text-slate-100 focus:outline-none transition-all placeholder-slate-300 dark:placeholder-slate-600"
               />
             </div>
