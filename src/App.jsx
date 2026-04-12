@@ -108,17 +108,23 @@ function App() {
       <div className="sticky top-0 z-40 bg-white/95 dark:bg-slate-950/80 backdrop-blur-md border-b border-slate-200/60 dark:border-slate-800 shadow-sm dark:shadow-none" dir="ltr">
         {/* Top Title Bar */}
         <header className="p-4">
-          <div className="flex items-center justify-between max-w-2xl mx-auto">
+          <div className="relative flex items-center justify-between max-w-2xl mx-auto">
             <div className="flex items-center gap-3">
               <div className="relative flex items-center justify-center bg-white dark:bg-slate-900 w-11 h-11 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800 overflow-hidden">
                 <div className="absolute inset-0 bg-primary-500/5 dark:bg-primary-500/10" />
                 <Package size={20} className="text-primary-600 dark:text-primary-400 absolute translate-x-1 translate-y-1" />
                 <Droplets size={16} className="text-cyan-500 dark:text-cyan-400 absolute -translate-x-1 -translate-y-1" />
               </div>
-              <h1 className="text-xl font-bold tracking-tight text-slate-800 dark:text-slate-100">{t('appTitle')}</h1>
+              <h1 className="text-xl font-bold tracking-tight text-slate-800 dark:text-slate-100 hidden sm:block">{t('appTitle')}</h1>
             </div>
             
+            {/* Centered Title */}
+            <div className="absolute left-1/2 -translate-x-1/2 flex flex-col items-center">
+              <span className="font-arabic font-black text-xl text-primary-600 dark:text-primary-400 tracking-tight leading-none">شركة الحرمين</span>
+              <span className="text-[9px] uppercase font-black text-slate-400 dark:text-slate-500 tracking-[0.2em] mt-0.5">EST. 2025</span>
+            </div>
 
+            <div className="w-11" /> {/* Spacer to balance the other side */}
           </div>
         </header>
 
