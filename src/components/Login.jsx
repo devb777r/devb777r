@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { supabase } from '../lib/supabase';
-import { LogIn, Mail, Lock, AlertCircle } from 'lucide-react';
+import { LogIn, Mail, Lock, AlertCircle, Package, Droplets } from 'lucide-react';
 
 export default function Login({ onClose, isGate = false }) {
   const { t, i18n } = useTranslation();
@@ -32,12 +32,13 @@ export default function Login({ onClose, isGate = false }) {
       <div className="mb-10 flex flex-col items-center text-center">
         <div className="relative mb-5">
           <div className="absolute inset-0 rounded-3xl bg-primary-500/20 blur-2xl scale-150" />
-          <div className="relative bg-gradient-to-br from-primary-500 to-primary-700 p-5 rounded-3xl shadow-2xl shadow-primary-500/40 ring-4 ring-white/10">
-            <LogIn size={36} className="text-white" />
+          <div className="relative flex items-center justify-center bg-gradient-to-br from-primary-500 to-primary-700 w-20 h-20 rounded-[2rem] shadow-2xl shadow-primary-500/40 ring-4 ring-white/10 overflow-hidden">
+             <Package size={36} className="text-white/80 absolute translate-x-1.5 translate-y-1.5" />
+             <Droplets size={28} className="text-white absolute -translate-x-1.5 -translate-y-1.5" />
           </div>
         </div>
         <h1 className="text-3xl font-black text-white tracking-tight mb-1">
-          {i18n.language === 'ar' ? 'مستودع العطور' : 'Perfume Storage'}
+          {t('appTitle')}
         </h1>
         <p className="text-sm font-semibold text-white/60">
           {i18n.language === 'ar' ? 'سجّل الدخول للمتابعة' : 'Sign in to continue'}
@@ -109,7 +110,7 @@ export default function Login({ onClose, isGate = false }) {
 
       {/* Footer */}
       <p className="mt-8 text-xs text-white/40 font-medium tracking-wide">
-        {i18n.language === 'ar' ? 'شركة الحرمين © 2025' : 'Al-Haramain Co. © 2025'}
+        {t('appTitle')} © 2025
       </p>
     </div>
   );

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Languages, Package, PlusCircle, LayoutDashboard, Sun, Moon, LogIn, LogOut, Search, List, LayoutGrid, Snowflake, Leaf, Flower2, User, UserCheck, Users, Filter, X, Building2, Factory, Venus, Mars, VenusAndMars } from 'lucide-react';
+import { Languages, Package, PlusCircle, LayoutDashboard, Sun, Moon, LogIn, LogOut, Search, List, LayoutGrid, Snowflake, Leaf, Flower2, User, UserCheck, Users, Filter, X, Building2, Factory, Venus, Mars, VenusAndMars, Droplets } from 'lucide-react';
 import { supabase } from './lib/supabase';
 import Dashboard from './components/Dashboard';
 import Login from './components/Login';
@@ -110,10 +110,12 @@ function App() {
         <header className="p-4">
           <div className="flex items-center justify-between max-w-2xl mx-auto">
             <div className="flex items-center gap-3">
-              <div className="bg-white dark:bg-slate-900 p-0.5 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800">
-                <img src="logo.png" className="w-9 h-9 object-contain rounded-lg" alt="Logo" />
+              <div className="relative flex items-center justify-center bg-white dark:bg-slate-900 w-11 h-11 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800 overflow-hidden">
+                <div className="absolute inset-0 bg-primary-500/5 dark:bg-primary-500/10" />
+                <Package size={20} className="text-primary-600 dark:text-primary-400 absolute translate-x-1 translate-y-1" />
+                <Droplets size={16} className="text-cyan-500 dark:text-cyan-400 absolute -translate-x-1 -translate-y-1" />
               </div>
-              <h1 className="text-xl font-bold tracking-tight text-slate-800 dark:text-slate-100">شركة الحرمين</h1>
+              <h1 className="text-xl font-bold tracking-tight text-slate-800 dark:text-slate-100">{t('appTitle')}</h1>
             </div>
             
 
