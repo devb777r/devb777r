@@ -510,7 +510,7 @@ export default function Dashboard({
                       )}
 
                       <span className="flex items-center gap-1.5 h-7 px-3 rounded-full bg-primary-500/5 text-[10px] font-black text-primary-600 dark:text-primary-400 border border-primary-500/10 tracking-widest uppercase">
-                        {perfume.provider === 'EMSA' ? <Factory size={12} className="text-primary-500" /> : <Building2 size={12} className="text-primary-500" />}
+                        {perfume.provider === 'EMSA' ? <Factory size={12} className="text-indigo-500" /> : <Building2 size={12} className="text-cyan-500" />}
                         {perfume.provider || 'RMI'}
                       </span>
                     </div>
@@ -518,10 +518,10 @@ export default function Dashboard({
                     {isAdmin && (
                       <div className={`flex gap-1.5 ${i18n.language === 'ar' ? 'flex-row-reverse' : ''}`}>
                         <button onClick={() => editPerfume(perfume)} className="p-1.5 text-slate-400 dark:text-slate-500 hover:text-primary-600 dark:hover:text-primary-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-all">
-                          <Edit3 size={14} />
+                          <Edit3 size={14} className="text-blue-500" />
                         </button>
                         <button onClick={() => deletePerfume(perfume.id)} className="p-1.5 text-slate-400 dark:text-slate-500 hover:text-red-500 dark:hover:text-red-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-all">
-                          <Trash2 size={14} />
+                          <Trash2 size={14} className="text-red-500" />
                         </button>
                       </div>
                     )}
@@ -565,10 +565,10 @@ export default function Dashboard({
                     {isAdmin && (
                       <div className="flex gap-1 bg-slate-50 dark:bg-slate-800/50 p-1 rounded-xl">
                         <button onClick={() => editPerfume(perfume)} className="p-1.5 text-slate-400 dark:text-slate-500 hover:text-primary-600 dark:hover:text-primary-400 hover:bg-white dark:hover:bg-slate-800 rounded-lg transition-all">
-                          <Edit3 size={14} />
+                          <Edit3 size={14} className="text-blue-500" />
                         </button>
                         <button onClick={() => deletePerfume(perfume.id)} className="p-1.5 text-slate-400 dark:text-slate-500 hover:text-red-500 dark:hover:text-red-400 hover:bg-white dark:hover:bg-slate-800 rounded-lg transition-all">
-                          <Trash2 size={14} />
+                          <Trash2 size={14} className="text-red-500" />
                         </button>
                       </div>
                     )}
@@ -576,7 +576,7 @@ export default function Dashboard({
 
                   <div className={`flex items-center gap-2 ${i18n.language === 'ar' ? 'justify-end' : ''}`}>
                     <span className="flex items-center gap-1 text-[10px] font-bold text-slate-400 dark:text-slate-500 bg-slate-50 dark:bg-slate-800/50 px-2.5 py-1 rounded-lg border border-slate-100 dark:border-slate-700">
-                      {perfume.provider === 'EMSA' ? <Factory size={10} /> : <Building2 size={10} />}
+                      {perfume.provider === 'EMSA' ? <Factory size={10} className="text-indigo-500" /> : <Building2 size={10} className="text-cyan-500" />}
                       {perfume.provider || 'RMI'}
                     </span>
                   </div>
@@ -633,7 +633,7 @@ export default function Dashboard({
                     perfume.gender === 'female' ? 'bg-rose-50 dark:bg-rose-500/10 text-rose-600 dark:text-rose-400 border-rose-100 dark:border-rose-500/20' :
                     'bg-cyan-50 dark:bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 border-cyan-100 dark:border-cyan-500/20'
                   }`}>
-                    {perfume.gender === 'male' ? <User size={12} /> : perfume.gender === 'female' ? <UserCheck size={12} /> : <Users size={12} />}
+                    {perfume.gender === 'male' ? <User size={12} className="text-indigo-500" /> : perfume.gender === 'female' ? <UserCheck size={12} className="text-rose-500" /> : <Users size={12} className="text-cyan-500" />}
                     {t(perfume.gender)}
                   </span>
                 )}

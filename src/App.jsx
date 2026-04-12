@@ -126,7 +126,7 @@ function App() {
             <div className="flex flex-col gap-3 max-w-2xl mx-auto">
               <div className="flex gap-2">
                 <div className="relative flex-1">
-                  <div className="absolute inset-y-0 start-0 flex items-center ps-5 pointer-events-none text-slate-400 dark:text-slate-500">
+                  <div className="absolute inset-y-0 start-0 flex items-center ps-5 pointer-events-none text-primary-500">
                     <Search size={20} />
                   </div>
                   <input 
@@ -139,19 +139,19 @@ function App() {
                 </div>
                 
                 <div className="flex items-center bg-slate-100 dark:bg-slate-800 p-1 rounded-full shrink-0 border border-slate-200 dark:border-slate-700 shadow-inner" dir="ltr">
-                  <button 
+                   <button 
                     onClick={() => setViewMode('list')} 
                     className={`p-2 rounded-full transition-all ${viewMode === 'list' ? 'bg-white dark:bg-slate-600 shadow-md text-primary-600 dark:text-primary-400' : 'text-slate-400 hover:text-slate-600 dark:hover:text-slate-300'}`}
                     aria-label="Detailed List View"
                   >
-                    <List size={18} />
+                    <List size={18} className={viewMode === 'list' ? 'text-primary-600 dark:text-primary-400' : 'text-indigo-400'} />
                   </button>
                   <button 
                     onClick={() => setViewMode('grid')} 
                     className={`p-2 rounded-full transition-all ${viewMode === 'grid' ? 'bg-white dark:bg-slate-600 shadow-md text-primary-600 dark:text-primary-400' : 'text-slate-400 hover:text-slate-600 dark:hover:text-slate-300'}`}
                     aria-label="Grid View"
                   >
-                    <LayoutGrid size={18} />
+                    <LayoutGrid size={18} className={viewMode === 'grid' ? 'text-primary-600 dark:text-primary-400' : 'text-cyan-400'} />
                   </button>
                 </div>
               </div>
@@ -283,7 +283,7 @@ function App() {
               onClick={() => setActiveTab('add')}
               className={`flex items-center justify-center -mt-10 bg-gradient-to-tr from-primary-600 to-cyan-500 dark:from-primary-500 dark:to-cyan-400 text-white rounded-full p-4 shadow-xl shadow-primary-500/40 hover:scale-110 active:scale-95 transition-all w-14 h-14 border-4 border-white dark:border-slate-900 z-10`}
             >
-              <PlusCircle size={32} />
+              <PlusCircle size={32} className="text-white drop-shadow-md" />
             </button>
           )}
 
@@ -294,7 +294,7 @@ function App() {
             onClick={() => setIsDarkMode(!isDarkMode)}
             className="flex flex-col items-center justify-center w-20 py-2 rounded-2xl transition-all text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300"
           >
-            {isDarkMode ? <Sun size={22} className="mb-1 text-amber-400" /> : <Moon size={22} className="mb-1" />}
+            {isDarkMode ? <Sun size={22} className="mb-1 text-amber-400" /> : <Moon size={22} className="mb-1 text-indigo-400" />}
             <span className="text-[10px] font-bold tracking-tight">{isDarkMode ? t('lightMode') : t('darkMode')}</span>
           </button>
 
@@ -304,7 +304,7 @@ function App() {
               onClick={() => setShowLogin(true)}
               className="flex flex-col items-center justify-center w-20 py-2 rounded-2xl transition-all text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300"
             >
-              <LogIn size={22} className="mb-1" />
+              <LogIn size={22} className="mb-1 text-primary-500" />
               <span className="text-[10px] font-bold tracking-tight">{t('login')}</span>
             </button>
           ) : (
@@ -312,7 +312,7 @@ function App() {
               onClick={handleLogout}
               className="flex flex-col items-center justify-center w-20 py-2 rounded-2xl transition-all text-red-400 hover:text-red-600"
             >
-              <LogOut size={22} className="mb-1" />
+              <LogOut size={22} className="mb-1 text-red-500" />
               <span className="text-[10px] font-bold tracking-tight">{t('logout')}</span>
             </button>
           )}

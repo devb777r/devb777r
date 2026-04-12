@@ -81,7 +81,12 @@ export default function CustomDialog({
               }}
               className={`flex-1 py-3.5 rounded-2xl font-bold text-sm text-white shadow-lg transition-all active:scale-[0.98] ${currentTheme.btnColor}`}
             >
-              {confirmText || (type === 'alert' ? 'OK' : t('save'))}
+              {confirmText || (
+                type === 'alert' ? 'OK' : 
+                type === 'delete' ? t('delete') : 
+                type === 'confirm' ? t('yes') : 
+                t('save')
+              )}
             </button>
           </div>
         </div>
