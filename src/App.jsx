@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Languages, Package, PlusCircle, LayoutDashboard, Sun, Moon, LogIn, LogOut, Search, AlignJustify, List, LayoutGrid, Snowflake, Leaf, Flower2, User, UserCheck, Users, Filter, X, Building2, Factory } from 'lucide-react';
+import { Languages, Package, PlusCircle, LayoutDashboard, Sun, Moon, LogIn, LogOut, Search, List, LayoutGrid, Snowflake, Leaf, Flower2, User, UserCheck, Users, Filter, X, Building2, Factory, Venus, Mars, VenusAndMars } from 'lucide-react';
 import { supabase } from './lib/supabase';
 import Dashboard from './components/Dashboard';
 import Login from './components/Login';
@@ -12,7 +12,7 @@ function App() {
   const [user, setUser] = useState(null);
   const [showLogin, setShowLogin] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
-  const [viewMode, setViewMode] = useState('compact'); // 'compact', 'list', 'grid'
+  const [viewMode, setViewMode] = useState('list'); // 'list', 'grid'
   const [selectedGenders, setSelectedGenders] = useState([]);
   const [selectedSeasons, setSelectedSeasons] = useState([]);
   const [selectedProviders, setSelectedProviders] = useState([]);
@@ -96,13 +96,6 @@ function App() {
                 
                 <div className="flex items-center bg-slate-100 dark:bg-slate-800 p-1 rounded-full shrink-0 border border-slate-200 dark:border-slate-700 shadow-inner" dir="ltr">
                   <button 
-                    onClick={() => setViewMode('compact')} 
-                    className={`p-2 rounded-full transition-all ${viewMode === 'compact' ? 'bg-white dark:bg-slate-600 shadow-md text-primary-600 dark:text-primary-400' : 'text-slate-400 hover:text-slate-600 dark:hover:text-slate-300'}`}
-                    aria-label="Compact List View"
-                  >
-                    <AlignJustify size={18} />
-                  </button>
-                  <button 
                     onClick={() => setViewMode('list')} 
                     className={`p-2 rounded-full transition-all ${viewMode === 'list' ? 'bg-white dark:bg-slate-600 shadow-md text-primary-600 dark:text-primary-400' : 'text-slate-400 hover:text-slate-600 dark:hover:text-slate-300'}`}
                     aria-label="Detailed List View"
@@ -121,13 +114,13 @@ function App() {
 
               {/* Advanced Filter Tags */}
               <div className="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1 px-1 -mx-1">
-                <Filter size={14} className="text-slate-400 shrink-0" />
+                <Filter size={16} className="text-primary-500 shrink-0" />
                 
                 <div className="flex gap-1.5 shrink-0">
                   {/* Provider Tags */}
                   {[
-                    { id: 'RMI', icon: <Building2 size={14} />, color: 'slate' },
-                    { id: 'EMSA', icon: <Factory size={14} />, color: 'slate' }
+                    { id: 'RMI', icon: <Building2 size={14} className="text-primary-600 dark:text-primary-400" />, color: 'primary' },
+                    { id: 'EMSA', icon: <Factory size={14} className="text-primary-600 dark:text-primary-400" />, color: 'primary' }
                   ].map(p => (
                     <button
                       key={p.id}
@@ -146,9 +139,9 @@ function App() {
                   
                   {/* Gender Tags */}
                   {[
-                    { id: 'male', icon: <User size={14} />, active: 'bg-indigo-500 border-indigo-600 dark:border-indigo-400' },
-                    { id: 'female', icon: <UserCheck size={14} />, active: 'bg-rose-500 border-rose-600 dark:border-rose-400' },
-                    { id: 'unisex', icon: <Users size={14} />, active: 'bg-emerald-500 border-emerald-600 dark:border-emerald-400' }
+                    { id: 'male', icon: <Mars size={14} className="text-indigo-600 dark:text-indigo-400" />, active: 'bg-indigo-600 border-indigo-700' },
+                    { id: 'female', icon: <Venus size={14} className="text-rose-600 dark:text-rose-400" />, active: 'bg-rose-600 border-rose-700' },
+                    { id: 'unisex', icon: <VenusAndMars size={14} className="text-cyan-600 dark:text-cyan-400" />, active: 'bg-cyan-600 border-cyan-700' }
                   ].map(g => (
                     <button
                       key={g.id}
@@ -167,10 +160,10 @@ function App() {
 
                   {/* Season Tags */}
                   {[
-                    { id: 'summer', icon: <Sun size={14} />, active: 'bg-amber-500 border-amber-600 dark:border-amber-400' },
-                    { id: 'winter', icon: <Snowflake size={14} />, active: 'bg-blue-500 border-blue-600 dark:border-blue-400' },
-                    { id: 'spring', icon: <Flower2 size={14} />, active: 'bg-rose-500 border-rose-600 dark:border-rose-400' },
-                    { id: 'fall', icon: <Leaf size={14} />, active: 'bg-orange-500 border-orange-600 dark:border-orange-400' }
+                    { id: 'summer', icon: <Sun size={14} className="text-amber-500" />, active: 'bg-amber-600 border-amber-700' },
+                    { id: 'winter', icon: <Snowflake size={14} className="text-blue-500" />, active: 'bg-blue-600 border-blue-700' },
+                    { id: 'spring', icon: <Flower2 size={14} className="text-rose-500" />, active: 'bg-rose-600 border-rose-700' },
+                    { id: 'fall', icon: <Leaf size={14} className="text-orange-500" />, active: 'bg-orange-600 border-orange-700' }
                   ].map(s => (
                     <button
                       key={s.id}

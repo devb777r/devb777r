@@ -5,9 +5,9 @@
 CREATE TABLE IF NOT EXISTS perfumes (
   id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
   display_id SERIAL,
-  name_en TEXT NOT NULL,
-  name_ar TEXT NOT NULL,
-  name_ar_market TEXT NOT NULL,
+  name_en TEXT,
+  name_ar TEXT,
+  name_ar_market TEXT,
   price_usd NUMERIC DEFAULT 0,
   total_volume_kg NUMERIC DEFAULT 1,
   description TEXT,
