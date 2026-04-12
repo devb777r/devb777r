@@ -12,7 +12,7 @@ function App() {
   const [user, setUser] = useState(null);
   const [showLogin, setShowLogin] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
-  const [viewMode, setViewMode] = useState('list'); // 'list', 'grid'
+  const [viewMode, setViewModeState] = useState(() => localStorage.getItem('viewMode') || 'list'); // 'list', 'grid'
   const [selectedGenders, setSelectedGenders] = useState([]);
   const [selectedSeasons, setSelectedSeasons] = useState([]);
   const [selectedProviders, setSelectedProviders] = useState([]);
@@ -45,6 +45,33 @@ function App() {
 
     return () => subscription.unsubscribe();
   }, []);
+
+  // Load view mode preference from Supabase when user logs in
+  useEffect(() => {
+    if (!user) return;
+    const loadPrefs = async () => {
+      const { data } = await supabase
+        .from('user_preferences')
+        .select('view_mode')
+        .eq('user_id', user.id)
+        .single();
+      if (data?.view_mode) {
+        setViewModeState(data.view_mode);
+        localStorage.setItem('viewMode', data.view_mode);
+      }
+    };
+    loadPrefs();
+  }, [user]);
+
+  // Save view mode to Supabase + localStorage
+  const setViewMode = async (mode) => {
+    setViewModeState(mode);
+    localStorage.setItem('viewMode', mode);
+    if (!user) return;
+    await supabase
+      .from('user_preferences')
+      .upsert({ user_id: user.id, view_mode: mode }, { onConflict: 'user_id' });
+  };
 
   const toggleLanguage = () => {
     const nextLang = i18n.language === 'en' ? 'ar' : 'en';
