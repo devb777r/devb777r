@@ -86,7 +86,7 @@ function App() {
     setActiveTab('inventory');
   };
 
-  const isAdmin = user?.email === 'admin@admin';
+  const isAdmin = user?.email === 'admin@admin.com';
 
   // Show loading spinner while session resolves
   if (isLoading) {
