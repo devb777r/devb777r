@@ -36,10 +36,10 @@ export default function Login({ onClose, isGate = false }) {
             <LogIn size={36} className="text-white" />
           </div>
         </div>
-        <h1 className="text-3xl font-black text-slate-900 dark:text-white tracking-tight mb-1">
+        <h1 className="text-3xl font-black text-white tracking-tight mb-1">
           {i18n.language === 'ar' ? 'مستودع العطور' : 'Perfume Storage'}
         </h1>
-        <p className="text-sm font-semibold text-slate-400 dark:text-slate-500">
+        <p className="text-sm font-semibold text-white/60">
           {i18n.language === 'ar' ? 'سجّل الدخول للمتابعة' : 'Sign in to continue'}
         </p>
       </div>
@@ -108,7 +108,7 @@ export default function Login({ onClose, isGate = false }) {
       </div>
 
       {/* Footer */}
-      <p className="mt-8 text-xs text-slate-400 dark:text-slate-600 font-medium tracking-wide">
+      <p className="mt-8 text-xs text-white/40 font-medium tracking-wide">
         {i18n.language === 'ar' ? 'شركة الحرمين © 2025' : 'Al-Haramain Co. © 2025'}
       </p>
     </div>
@@ -116,10 +116,7 @@ export default function Login({ onClose, isGate = false }) {
 
   if (isGate) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-primary-50 dark:from-slate-950 dark:via-slate-900 dark:to-primary-950 flex items-center justify-center animate-in fade-in duration-500">
-        {/* Decorative blobs */}
-        <div className="fixed top-0 left-0 w-96 h-96 bg-primary-400/10 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2 pointer-events-none" />
-        <div className="fixed bottom-0 right-0 w-96 h-96 bg-primary-600/10 rounded-full blur-3xl translate-x-1/2 translate-y-1/2 pointer-events-none" />
+      <div className="min-h-screen bg-primary-600 flex items-center justify-center animate-in fade-in duration-500">
         {content}
       </div>
     );
