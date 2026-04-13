@@ -13,6 +13,7 @@ function App() {
   const [isLoading, setIsLoading] = useState(true);
   const [showLogin, setShowLogin] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [debouncedSearchQuery, setDebouncedSearchQuery] = useState('');
   const [viewMode, setViewModeState] = useState(() => localStorage.getItem('viewMode') || 'list'); // 'list', 'grid'
   const [selectedGenders, setSelectedGenders] = useState([]);
   const [selectedSeasons, setSelectedSeasons] = useState([]);
@@ -48,6 +49,14 @@ function App() {
 
     return () => subscription.unsubscribe();
   }, []);
+
+  // Debounce Search Query
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedSearchQuery(searchQuery);
+    }, 400); // 400ms delay for smoother typing experience
+    return () => clearTimeout(timer);
+  }, [searchQuery]);
 
   // Load view mode preference from Supabase when user logs in
   useEffect(() => {
@@ -108,7 +117,7 @@ function App() {
       <div className="sticky top-0 z-40 bg-white/95 dark:bg-slate-950/80 backdrop-blur-md border-b border-slate-200/60 dark:border-slate-800 shadow-sm dark:shadow-none" dir="ltr">
         {/* Top Title Bar */}
         <header className="p-4">
-          <div className="relative flex items-center justify-between max-w-2xl mx-auto">
+          <div className="relative flex items-center justify-between max-w-2xl md:max-w-4xl lg:max-w-5xl xl:max-w-7xl 2xl:max-w-[1400px] mx-auto">
             <div className="flex items-center gap-3">
               <div className="relative flex items-center justify-center bg-white dark:bg-slate-900 w-11 h-11 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800 overflow-hidden">
                 <div className="absolute inset-0 bg-primary-500/5 dark:bg-primary-500/10" />
@@ -131,7 +140,7 @@ function App() {
         {/* Secondary Navigation Bar (Search/Filters) - Only for Inventory */}
         {activeTab === 'inventory' && (
           <div className="px-4 pb-4 animate-in slide-in-from-top-2 duration-300">
-            <div className="flex flex-col gap-3 max-w-2xl mx-auto">
+            <div className="flex flex-col gap-3 max-w-2xl md:max-w-4xl lg:max-w-5xl xl:max-w-7xl 2xl:max-w-[1400px] mx-auto">
               <div className="flex gap-2">
                 <div className="relative flex-1">
                   <div className="absolute inset-y-0 start-0 flex items-center ps-5 pointer-events-none text-primary-500">
@@ -247,12 +256,12 @@ function App() {
       </div>
 
       {/* Main Content Area */}
-      <main className="p-4 max-w-2xl mx-auto w-full">
+      <main className="p-4 max-w-2xl md:max-w-4xl lg:max-w-5xl xl:max-w-7xl 2xl:max-w-[1400px] mx-auto w-full">
         <Dashboard 
           activeTab={activeTab} 
           setActiveTab={setActiveTab} 
           isAdmin={isAdmin} 
-          searchQuery={searchQuery}
+          searchQuery={debouncedSearchQuery}
           setSearchQuery={setSearchQuery}
           viewMode={viewMode}
           setViewMode={setViewMode}
@@ -262,13 +271,13 @@ function App() {
         />
       </main>
 
-      {/* Mobile Bottom Navbar - Liquid Glass Floating Pill */}
-      <nav className="fixed bottom-6 left-4 right-4 z-50 liquid-glass rounded-[2.5rem] max-w-lg mx-auto px-2 py-1.5" dir="ltr">
-        <div className="flex justify-around items-center max-w-2xl mx-auto w-full relative">
+      {/* Mobile & Desktop Bottom Navbar - Liquid Glass Centerpiece */}
+      <nav className="fixed bottom-6 left-4 right-4 z-50 liquid-glass rounded-[2.5rem] max-w-lg md:max-w-2xl lg:max-w-3xl mx-auto px-6 py-2 shadow-2xl shadow-primary-500/10 border border-white/40 dark:border-primary-500/10" dir="ltr">
+        <div className="flex justify-around items-center w-full relative">
           {/* Inventory Tab */}
           <button 
             onClick={() => setActiveTab('inventory')}
-            className={`flex flex-col items-center justify-center w-20 py-2 rounded-2xl transition-all duration-300 ${activeTab === 'inventory' ? 'text-primary-600 dark:text-primary-400 bg-white/50 dark:bg-white/10 shadow-sm scale-105' : 'text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300'}`}
+            className={`flex flex-col items-center justify-center w-20 py-2 rounded-2xl transition-all duration-300 touch-active-luxury ${activeTab === 'inventory' ? 'text-primary-600 dark:text-primary-400 bg-white/50 dark:bg-white/10 shadow-sm scale-105' : 'text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300'}`}
           >
             <LayoutDashboard size={22} className={activeTab === 'inventory' ? 'mb-1' : 'mb-1'} />
             <span className="text-[10px] font-bold tracking-tight">{t('inventory')}</span>
@@ -279,7 +288,7 @@ function App() {
           {/* Settings / Language Tab */}
           <button 
             onClick={toggleLanguage}
-            className="flex flex-col items-center justify-center w-20 py-2 rounded-2xl transition-all text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300"
+            className="flex flex-col items-center justify-center w-20 py-2 rounded-2xl transition-all text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300 touch-active-luxury"
           >
             <Languages size={22} className="mb-1" />
             <span className="text-[10px] font-bold tracking-tight">{i18n.language === 'en' ? 'العربية' : 'English'}</span>
@@ -289,7 +298,7 @@ function App() {
           {isAdmin && (
             <button 
               onClick={() => setActiveTab('add')}
-              className={`flex items-center justify-center -mt-10 bg-gradient-to-tr from-primary-600 to-cyan-500 dark:from-primary-500 dark:to-cyan-400 text-white rounded-full p-4 shadow-xl shadow-primary-500/40 hover:scale-110 active:scale-95 transition-all w-14 h-14 border-4 border-white dark:border-slate-900 z-10`}
+              className={`flex items-center justify-center -mt-10 bg-gradient-to-tr from-primary-600 to-cyan-500 dark:from-primary-500 dark:to-cyan-400 text-white rounded-full p-4 shadow-xl shadow-primary-500/40 active:scale-110 active:brightness-110 transition-all w-14 h-14 border-4 border-white dark:border-slate-900 z-10 touch-active-luxury`}
             >
               <PlusCircle size={32} className="text-white drop-shadow-md" />
             </button>
@@ -300,7 +309,7 @@ function App() {
           {/* Theme Toggle Tab */}
           <button 
             onClick={() => setIsDarkMode(!isDarkMode)}
-            className="flex flex-col items-center justify-center w-20 py-2 rounded-2xl transition-all text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300"
+            className="flex flex-col items-center justify-center w-20 py-2 rounded-2xl transition-all text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300 touch-active-luxury"
           >
             {isDarkMode ? <Sun size={22} className="mb-1 text-amber-400" /> : <Moon size={22} className="mb-1 text-indigo-400" />}
             <span className="text-[10px] font-bold tracking-tight">{isDarkMode ? t('lightMode') : t('darkMode')}</span>
@@ -310,7 +319,7 @@ function App() {
           {!user ? (
             <button 
               onClick={() => setShowLogin(true)}
-              className="flex flex-col items-center justify-center w-20 py-2 rounded-2xl transition-all text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300"
+              className="flex flex-col items-center justify-center w-20 py-2 rounded-2xl transition-all text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300 touch-active-luxury"
             >
               <LogIn size={22} className="mb-1 text-primary-500" />
               <span className="text-[10px] font-bold tracking-tight">{t('login')}</span>

@@ -63,3 +63,104 @@
   50% { background-position: 100% 50%; }
   100% { background-position: 0% 50%; }
 }
+
+@keyframes shimmer-mobile {
+  0% { transform: translateX(-150%) skewX(-20deg); }
+  100% { transform: translateX(150%) skewX(-20deg); }
+}
+
+@keyframes spring-pop {
+  0% { transform: scale(0.95); opacity: 0; }
+  70% { transform: scale(1.02); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes slide-up-staggered {
+  0% { transform: translateY(20px); opacity: 0; }
+  100% { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes slide-view-in {
+  from { transform: translateX(30px); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+.animate-spring-pop {
+  animation: spring-pop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+.animate-slide-view {
+  animation: slide-view-in 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.luxury-shimmer-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.luxury-shimmer-card::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: linear-gradient(
+    110deg,
+    rgba(255, 255, 255, 0) 20%,
+    rgba(255, 255, 255, 0.15) 50%,
+    rgba(255, 255, 255, 0) 80%
+  );
+  animation: shimmer-mobile 3s infinite linear;
+  pointer-events: none;
+}
+
+.dark .luxury-shimmer-card::after {
+  background: linear-gradient(
+    110deg,
+    rgba(255, 255, 255, 0) 20%,
+    rgba(255, 255, 255, 0.05) 50%,
+    rgba(255, 255, 255, 0) 80%
+  );
+}
+
+.touch-active-luxury {
+  @apply transition-transform duration-200 active:scale-95 active:brightness-95;
+}
+
+.staggered-item {
+  animation: slide-up-staggered 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+/* Elite Desktop Hover Effects */
+@media (hover: hover) {
+  .luxury-card-hover {
+    transition: all 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+  
+  .luxury-card-hover:hover {
+    transform: translateY(-8px) scale(1.01);
+    box-shadow: 0 25px 50px -12px rgba(var(--primary-rgb), 0.25);
+    background: rgba(255, 255, 255, 0.95);
+    z-index: 10;
+  }
+  
+  .dark .luxury-card-hover:hover {
+    background: rgba(15, 23, 42, 0.95);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  }
+
+  .luxury-btn-hover:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.1);
+    box-shadow: 0 10px 15px -3px rgba(var(--primary-rgb), 0.3);
+  }
+}
+
+.max-w-7xl-custom {
+  max-width: 80rem; /* 1280px approx */
+}
+
+.max-w-8xl-custom {
+  max-width: 90rem; /* 1440px approx */
+}
