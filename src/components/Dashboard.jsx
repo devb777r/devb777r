@@ -22,6 +22,7 @@ export default function Dashboard({
   const [page, setPage] = useState(0);
   const [hasMore, setHasMore] = useState(true);
   const [totalCount, setTotalCount] = useState(0);
+  const [globalCount, setGlobalCount] = useState(0);
   const [isFetchingMore, setIsFetchingMore] = useState(false);
   const loaderRef = useRef(null);
 
@@ -72,7 +73,18 @@ export default function Dashboard({
     setPage(0);
     setHasMore(true);
     fetchPerfumes(0, true);
+    fetchGlobalCount();
   }, [searchQuery, selectedGenders, selectedSeasons, selectedProviders]);
+
+  const fetchGlobalCount = async () => {
+    const { count, error } = await supabase
+      .from('perfumes')
+      .select('*', { count: 'exact', head: true });
+    
+    if (!error) {
+      setGlobalCount(count);
+    }
+  };
 
   const fetchPerfumes = async (pageToFetch, isNewSearch = false) => {
     if (isNewSearch) {
@@ -485,9 +497,20 @@ export default function Dashboard({
             </div>
           ) : (
             <>
-              {/* Luxury Results Badge - Aligned Left in Arabic */}
-              {(searchQuery || selectedGenders.length > 0 || selectedSeasons.length > 0 || selectedProviders.length > 0) && (
-                <div className={`flex items-center mb-6 px-2 animate-slide-view ${i18n.language === 'ar' ? 'flex-row-reverse justify-end' : 'justify-start'}`}>
+              {/* Luxury Results Badges - Left Aligned */}
+              <div className={`flex flex-col gap-2 mb-6 px-2 animate-slide-view ${i18n.language === 'ar' ? 'items-end' : 'items-start'}`}>
+                {/* Total Inventory Badge */}
+                <div className="flex items-center gap-3 bg-slate-100/50 dark:bg-slate-800/30 backdrop-blur-sm px-4 py-1.5 rounded-xl border border-slate-200/50 dark:border-slate-800/50">
+                  <span className="text-[11px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest">
+                    {i18n.language === 'ar' ? 'إجمالي العطور' : 'Total Inventory'}
+                  </span>
+                  <span className="flex items-center justify-center min-w-[20px] h-5 px-1.5 rounded-md bg-slate-800 dark:bg-slate-200 text-[10px] font-black text-white dark:text-slate-900">
+                    {globalCount}
+                  </span>
+                </div>
+
+                {/* Filtered Results Badge */}
+                {(searchQuery || selectedGenders.length > 0 || selectedSeasons.length > 0 || selectedProviders.length > 0) && (
                   <div className="flex items-center gap-3 bg-white/40 dark:bg-primary-950/20 backdrop-blur-md px-4 py-2 rounded-2xl border border-white/40 dark:border-primary-500/20 shadow-xl shadow-primary-500/5">
                     <span className="flex items-center justify-center min-w-[24px] h-6 px-1.5 rounded-lg bg-primary-600 dark:bg-primary-500 text-[12px] font-black text-white shadow-lg shadow-primary-500/30">
                       {totalCount}
@@ -496,8 +519,8 @@ export default function Dashboard({
                       {totalCount === 1 ? 'عطر متوفر حالياً' : 'عطراً متوفرة في النتائج'}
                     </span>
                   </div>
-                </div>
-              )}
+                )}
+              </div>
 
               <div className={viewMode === 'grid' ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-8" : "space-y-6"}>
                 {perfumes.map((perfume, index) => {
