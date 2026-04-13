@@ -418,8 +418,6 @@ export default function Dashboard({
                       {[
                         { id: 'summer', icon: <Sun size={18} />, color: 'text-amber-500 bg-amber-50 dark:bg-amber-500/10 border-amber-300 dark:border-amber-500/30' },
                         { id: 'winter', icon: <Snowflake size={18} />, color: 'text-blue-500 bg-blue-50 dark:bg-blue-500/10 border-blue-300 dark:border-blue-500/30' },
-                        { id: 'spring', icon: <Flower2 size={18} />, color: 'text-rose-400 bg-rose-50 dark:bg-rose-400/10 border-rose-300 dark:border-rose-400/30' },
-                        { id: 'fall', icon: <Leaf size={18} />, color: 'text-orange-500 bg-orange-50 dark:bg-orange-500/10 border-orange-300 dark:border-orange-500/30' }
                       ].map(s => (
                         <button key={s.id} type="button" onClick={() => handleSeasonToggle(s.id)}
                           className={`flex flex-col items-center justify-center gap-1.5 py-4 rounded-2xl border-2 transition-all font-bold text-xs ${
@@ -574,11 +572,9 @@ export default function Dashboard({
                             {(perfume.seasons || []).map(s => (
                               <span key={s} className={`flex items-center justify-center w-7 h-7 rounded-full border shadow-sm ${
                                 s === 'summer' ? 'bg-amber-50 dark:bg-amber-500/10 border-amber-100 dark:border-amber-500/20 text-amber-500' :
-                                s === 'winter' ? 'bg-blue-50 dark:bg-blue-500/10 border-blue-100 dark:border-blue-500/20 text-blue-500' :
-                                s === 'spring' ? 'bg-rose-50 dark:bg-rose-400/10 border-rose-100 dark:border-rose-400/20 text-rose-400' :
-                                'bg-orange-50 dark:bg-orange-500/10 border-orange-100 dark:border-orange-500/20 text-orange-600'
+                                'bg-blue-50 dark:bg-blue-500/10 border-blue-100 dark:border-blue-500/20 text-blue-500'
                               }`}>
-                                {s === 'summer' ? <Sun size={14} /> : s === 'winter' ? <Snowflake size={14} /> : s === 'spring' ? <Flower2 size={14} /> : <Leaf size={14} />}
+                                {s === 'summer' ? <Sun size={14} /> : <Snowflake size={14} />}
                               </span>
                             ))}
                             
@@ -686,7 +682,7 @@ export default function Dashboard({
                         <div className="flex flex-wrap gap-1.5">
                           {(perfume.seasons || []).map(s => (
                             <span key={s} className="flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-slate-50 dark:bg-slate-800/50 text-slate-500 dark:text-slate-400 border border-slate-100 dark:border-slate-700/50">
-                              {s === 'summer' ? <Sun size={12} className="text-amber-500" /> : s === 'winter' ? <Snowflake size={12} className="text-blue-500" /> : s === 'spring' ? <Flower2 size={12} className="text-rose-400" /> : <Leaf size={12} className="text-orange-500" />}
+                              {s === 'summer' ? <Sun size={12} className="text-amber-500" /> : <Snowflake size={12} className="text-blue-500" />}
                               {t(s)}
                             </span>
                           ))}

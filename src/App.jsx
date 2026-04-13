@@ -222,9 +222,7 @@ function App() {
                   {/* Season Tags */}
                   {[
                     { id: 'summer', icon: <Sun size={14} className="text-amber-500" />, active: 'bg-amber-600 border-amber-700' },
-                    { id: 'winter', icon: <Snowflake size={14} className="text-blue-500" />, active: 'bg-blue-600 border-blue-700' },
-                    { id: 'spring', icon: <Flower2 size={14} className="text-rose-500" />, active: 'bg-rose-600 border-rose-700' },
-                    { id: 'fall', icon: <Leaf size={14} className="text-orange-500" />, active: 'bg-orange-600 border-orange-700' }
+                    { id: 'winter', icon: <Snowflake size={14} className="text-blue-500" />, active: 'bg-blue-600 border-blue-700' }
                   ].map(s => (
                     <button
                       key={s.id}
