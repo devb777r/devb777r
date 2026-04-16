@@ -514,12 +514,12 @@ export default function Dashboard({
                   className="view-mode-list"
                   data={perfumes}
                   totalCount={Math.min(totalCount, perfumes.length)}
-                  overscan={5000}
-                  increaseViewportBy={{ top: 7800, bottom: 6500 }}
-                  initialItemCount={20}
+                  overscan={8000}
+                  increaseViewportBy={{ top: 8000, bottom: 8000 }}
+                  initialItemCount={40}
                   scrollSeekConfiguration={{
-                    enter: (velocity) => Math.abs(velocity) > 200,
-                    exit: (velocity) => Math.abs(velocity) < 60
+                    enter: (velocity) => Math.abs(velocity) > 1000,
+                    exit: (velocity) => Math.abs(velocity) < 100
                   }}
                   components={{
                     ScrollSeekPlaceholder: () => (
@@ -559,12 +559,12 @@ export default function Dashboard({
                   className="view-mode-grid"
                   data={perfumes}
                   totalCount={Math.min(totalCount, perfumes.length)}
-                  overscan={5000}
-                  increaseViewportBy={{ top: 7800, bottom: 6500 }}
-                  initialItemCount={20}
+                  overscan={8000}
+                  increaseViewportBy={{ top: 8000, bottom: 8000 }}
+                  initialItemCount={40}
                   scrollSeekConfiguration={{
-                    enter: (velocity) => Math.abs(velocity) > 200,
-                    exit: (velocity) => Math.abs(velocity) < 60
+                    enter: (velocity) => Math.abs(velocity) > 1000,
+                    exit: (velocity) => Math.abs(velocity) < 100
                   }}
                   components={{
                     ScrollSeekPlaceholder: () => (
