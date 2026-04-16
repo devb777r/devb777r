@@ -20,6 +20,9 @@
     font-family: var(--font-sans);
     -ms-overflow-style: none; /* IE and Edge */
     scrollbar-width: none;    /* Firefox */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    min-height: 100svh;
   }
   
   body::-webkit-scrollbar {
@@ -47,26 +50,42 @@
 }
 
 .custom-bg-pulse {
-  background: linear-gradient(135deg, #bfdbfe 0%, #ffffff 50%, #bae6fd 100%);
-  background-size: 300% 300%;
-  background-attachment: fixed;
-  animation: gradient-pulse 8s ease infinite;
+  position: relative;
+  background-color: #ffffff;
 }
 
 .dark .custom-bg-pulse {
+  background-color: #020617;
+}
+
+.custom-bg-pulse::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(135deg, #bfdbfe 0%, #ffffff 50%, #bae6fd 100%);
+  background-size: 200% 200%;
+  animation: gradient-pulse 10s ease-in-out infinite alternate;
+  pointer-events: none;
+}
+
+.dark .custom-bg-pulse::before {
   background: linear-gradient(135deg, #020617 0%, #070a13 50%, #0f172a 100%);
-  background-attachment: fixed;
 }
 
 @keyframes gradient-pulse {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+  0% { transform: scale(1); opacity: 0.8; }
+  100% { transform: scale(1.1); opacity: 1; }
+}
+
+/* Touch responsiveness for Safari/Mobile */
+* {
+  -webkit-tap-highlight-color: transparent;
 }
 
 @keyframes shimmer-mobile {
-  0% { transform: translateX(-150%) skewX(-20deg); }
-  100% { transform: translateX(150%) skewX(-20deg); }
+  0% { transform: translateX(-100%) skewX(-20deg); }
+  100% { transform: translateX(100%) skewX(-20deg); }
 }
 
 @keyframes spring-pop {
@@ -75,9 +94,9 @@
   100% { transform: scale(1); opacity: 1; }
 }
 
-@keyframes slide-up-staggered {
-  0% { transform: translateY(20px); opacity: 0; }
-  100% { transform: translateY(0); opacity: 1; }
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 @keyframes slide-view-in {
@@ -111,7 +130,7 @@
     rgba(255, 255, 255, 0.15) 50%,
     rgba(255, 255, 255, 0) 80%
   );
-  animation: shimmer-mobile 3s infinite linear;
+  animation: shimmer-mobile 4s infinite linear;
   pointer-events: none;
 }
 
@@ -129,7 +148,12 @@
 }
 
 .staggered-item {
-  animation: slide-up-staggered 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  animation: fadeIn 0.3s ease-out both;
+  will-change: opacity, transform;
+}
+
+.virtuoso-list-container {
+  will-change: transform;
 }
 
 /* Elite Desktop Hover Effects */

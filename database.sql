@@ -59,3 +59,30 @@ CREATE POLICY "Allow anonymous update access" ON public.perfume_transactions FOR
 
 DROP POLICY IF EXISTS "Allow anonymous delete access" ON public.perfume_transactions;
 CREATE POLICY "Allow anonymous delete access" ON public.perfume_transactions FOR DELETE USING (true);
+
+-- RPC: Delete a perfume and renumber subsequent items to fill the gap
+-- This ensures a continuous sequence (Gapless Inventory)
+CREATE OR REPLACE FUNCTION delete_perfume_and_sync(target_id UUID)
+RETURNS void
+LANGUAGE plpgsql
+SECURITY DEFINER
+AS $$
+DECLARE
+    deleted_display_id INTEGER;
+BEGIN
+    -- 1. Get the display_id of the item being deleted
+    SELECT display_id INTO deleted_display_id FROM perfumes WHERE id = target_id;
+    
+    -- 2. Delete the item
+    DELETE FROM perfumes WHERE id = target_id;
+    
+    -- 3. Shift all subsequent items down by 1
+    UPDATE perfumes 
+    SET display_id = display_id - 1 
+    WHERE display_id > deleted_display_id;
+    
+    -- 4. Reset the sequence to the current max + 1
+    -- This handles the case where the deleted item was at the end or in the middle.
+    PERFORM setval('perfumes_display_id_seq', COALESCE((SELECT MAX(display_id) FROM perfumes), 0) + 1, false);
+END;
+$$;
