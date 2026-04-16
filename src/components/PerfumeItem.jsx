@@ -5,13 +5,11 @@ import { Edit3, Trash2, Weight, ArrowRight, ArrowLeft, Sun, Snowflake, Mars, Ven
 const PerfumeItem = React.memo(({ perfume, viewMode, isAdmin, onEdit, onDelete, index }) => {
   if (!perfume) return null;
   const { t, i18n } = useTranslation();
-  const delay = `${Math.min(index * 0.05, 0.5)}s`;
 
   if (viewMode === 'list') {
     return (
       <div 
-        className="bg-white dark:bg-slate-900 rounded-3xl p-4 shadow-sm border border-slate-100 dark:border-slate-800 transition-all relative group luxury-shimmer-card staggered-item luxury-card-hover"
-        style={{ animationDelay: delay }}
+        className="luxury-card-container rounded-3xl p-4 group staggered-item luxury-card-hover"
       >
         {/* Top Row: Info and Arrow Price Badge */}
         <div className={`flex justify-between items-center gap-4 ${i18n.language === 'ar' ? 'flex-row-reverse' : ''}`}>
@@ -42,7 +40,7 @@ const PerfumeItem = React.memo(({ perfume, viewMode, isAdmin, onEdit, onDelete, 
         {/* Description Row (New for List Mode) */}
         {perfume.description && (
           <div className={`mt-3 px-1 ${i18n.language === 'ar' ? 'text-right' : 'text-left'}`}>
-            <p className="text-sm text-slate-950 dark:text-white font-bold leading-relaxed whitespace-pre-wrap">
+            <p className="text-sm text-slate-950 dark:text-white font-bold leading-relaxed line-clamp-3 whitespace-pre-wrap">
               {perfume.description}
             </p>
           </div>
@@ -112,8 +110,7 @@ const PerfumeItem = React.memo(({ perfume, viewMode, isAdmin, onEdit, onDelete, 
   // GRID VIEW
   return (
     <div 
-      className="bg-white dark:bg-slate-900 rounded-[2rem] p-6 shadow-sm border border-slate-100 dark:border-slate-800 transition-all relative overflow-hidden group flex flex-col justify-between luxury-shimmer-card staggered-item luxury-card-hover h-full"
-      style={{ animationDelay: delay }}
+      className="luxury-card-container rounded-[2rem] p-6 group flex flex-col justify-between staggered-item luxury-card-hover h-full"
     >
       <div>
         <div className="flex flex-col gap-4">
@@ -163,7 +160,7 @@ const PerfumeItem = React.memo(({ perfume, viewMode, isAdmin, onEdit, onDelete, 
               {perfume.provider || 'RMI'}
             </span>
           </div>
-          {perfume.description && <p className={`text-sm text-slate-950 dark:text-white font-bold leading-relaxed whitespace-pre-wrap mt-3 ${i18n.language === 'ar' ? 'text-right' : 'text-left'}`}>{perfume.description}</p>}
+          {perfume.description && <p className={`text-sm text-slate-950 dark:text-white font-bold leading-relaxed line-clamp-3 whitespace-pre-wrap mt-3 ${i18n.language === 'ar' ? 'text-right' : 'text-left'}`}>{perfume.description}</p>}
         </div>
         <div className="mt-6 mb-6 grid grid-cols-2 gap-3">
           <div className="bg-slate-50 dark:bg-slate-800/40 rounded-[1.5rem] p-4 border border-slate-100 dark:border-slate-800/60 shadow-inner flex flex-col items-center justify-center text-center">

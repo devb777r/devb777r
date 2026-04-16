@@ -112,48 +112,45 @@
   animation: slide-view-in 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 
-.luxury-shimmer-card {
-  position: relative;
+/* Stability Overrides: Instantly solid cards for high-speed use */
+.luxury-card-container {
+  @apply bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 shadow-sm relative overflow-hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  contain: content;
+}
+
+.view-mode-list .staggered-item {
+  height: 240px;
+  min-height: 240px;
+  max-height: 240px;
+}
+
+.view-mode-grid .staggered-item {
+  height: 520px;
+  min-height: 520px;
+  max-height: 520px;
+}
+
+/* Line Clamping for Descriptions */
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;  
   overflow: hidden;
 }
 
-.luxury-shimmer-card::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  background: linear-gradient(
-    110deg,
-    rgba(255, 255, 255, 0) 20%,
-    rgba(255, 255, 255, 0.15) 50%,
-    rgba(255, 255, 255, 0) 80%
-  );
-  animation: shimmer-mobile 4s infinite linear;
-  pointer-events: none;
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
-.dark .luxury-shimmer-card::after {
-  background: linear-gradient(
-    110deg,
-    rgba(255, 255, 255, 0) 20%,
-    rgba(255, 255, 255, 0.05) 50%,
-    rgba(255, 255, 255, 0) 80%
-  );
+.animate-fadeIn {
+  animation: fadeIn 0.5s ease-out forwards;
 }
 
-.touch-active-luxury {
-  @apply transition-transform duration-200 active:scale-95 active:brightness-95;
-}
-
-.staggered-item {
-  animation: fadeIn 0.3s ease-out both;
-  will-change: opacity, transform;
-}
-
-.virtuoso-list-container {
-  will-change: transform;
+/* Sticky Bottom Loader */
+.sticky-loader-bottom {
+  @apply fixed bottom-4 left-1/2 -translate-x-1/2 z-[60] flex items-center gap-3 px-6 py-3 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md rounded-full border border-slate-200 dark:border-slate-800 shadow-xl shadow-primary-500/10 pointer-events-none transition-all duration-300;
 }
 
 /* Elite Desktop Hover Effects */

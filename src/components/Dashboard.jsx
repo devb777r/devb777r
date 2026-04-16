@@ -21,7 +21,7 @@ export default function Dashboard({
 }) {
   const { t, i18n } = useTranslation();
   const queryClient = useQueryClient();
-  const PAGE_SIZE = 30;
+  const PAGE_SIZE = 50;
 
   // Form states for ADD / EDIT
   const [formData, setFormData] = useState({
@@ -232,20 +232,34 @@ export default function Dashboard({
     setFormData(prev => ({ ...prev, provider }));
   };
 
-  // Skeleton Loader for Cards
-  const SkeletonCard = () => (
-    <div className="bg-white dark:bg-slate-900 rounded-3xl p-5 border border-slate-100 dark:border-slate-800 relative overflow-hidden shimmer-effect h-[200px]">
+  // Skeleton Loaders for different view modes
+  const ListSkeleton = () => (
+    <div className="luxury-card-container rounded-3xl p-5 staggered-item h-[240px]">
       <div className="flex justify-between items-start mb-4">
         <div className="space-y-2 flex-1">
           <div className="h-6 bg-slate-200 dark:bg-slate-800 rounded-lg w-3/4"></div>
           <div className="h-4 bg-slate-100 dark:bg-slate-800/50 rounded-lg w-1/2"></div>
         </div>
-        <div className="w-8 h-8 bg-slate-200 dark:bg-slate-800 rounded-xl"></div>
       </div>
-      <div className="h-20 bg-slate-50 dark:bg-slate-800/30 rounded-2xl mb-4"></div>
+      <div className="h-28 bg-slate-50 dark:bg-slate-800/30 rounded-2xl mb-4"></div>
       <div className="flex gap-2">
         <div className="h-6 bg-slate-100 dark:bg-slate-800/50 rounded-full w-20"></div>
-        <div className="h-6 bg-slate-100 dark:bg-slate-800/50 rounded-full w-20"></div>
+      </div>
+    </div>
+  );
+
+  const GridSkeleton = () => (
+    <div className="luxury-card-container rounded-[2rem] p-6 staggered-item h-[520px] flex flex-col">
+      <div className="flex justify-between items-start mb-4">
+        <div className="space-y-3 flex-1">
+          <div className="h-7 bg-slate-200 dark:bg-slate-800 rounded-lg w-[80%]"></div>
+          <div className="h-5 bg-slate-100 dark:bg-slate-800/50 rounded-lg w-[60%]"></div>
+        </div>
+      </div>
+      <div className="h-64 bg-slate-50 dark:bg-slate-800/30 rounded-3xl mb-4"></div>
+      <div className="mt-auto flex gap-2">
+        <div className="h-8 bg-slate-100 dark:bg-slate-800/50 rounded-xl w-24"></div>
+        <div className="h-8 bg-slate-100 dark:bg-slate-800/50 rounded-xl w-24 ml-auto"></div>
       </div>
     </div>
   );
@@ -459,7 +473,7 @@ export default function Dashboard({
 
           {isLoading && perfumes.length === 0 ? (
             <div className={viewMode === 'grid' ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" : "space-y-4"}>
-              {[...Array(6)].map((_, i) => <SkeletonCard key={i} />)}
+              {[...Array(6)].map((_, i) => viewMode === 'list' ? <ListSkeleton key={i} /> : <GridSkeleton key={i} />)}
             </div>
           ) : perfumes.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-20 text-center text-slate-400 gap-4">
@@ -497,52 +511,67 @@ export default function Dashboard({
               {viewMode === 'list' ? (
                 <Virtuoso
                   useWindowScroll
+                  className="view-mode-list"
                   data={perfumes}
                   totalCount={Math.min(totalCount, perfumes.length)}
-                  overscan={1200}
-                  increaseViewportBy={{ top: 800, bottom: 800 }}
-                  computeItemKey={(index, item) => item?.id || `idx-${index}`}
+                  overscan={5000}
+                  increaseViewportBy={{ top: 7800, bottom: 6500 }}
+                  initialItemCount={20}
+                  scrollSeekConfiguration={{
+                    enter: (velocity) => Math.abs(velocity) > 200,
+                    exit: (velocity) => Math.abs(velocity) < 60
+                  }}
+                  components={{
+                    ScrollSeekPlaceholder: () => (
+                      <div className="pb-6">
+                        <ListSkeleton />
+                      </div>
+                    )
+                  }}
+                  computeItemKey={(index) => index}
                   endReached={() => {
                     if (hasNextPage && !isFetchingNextPage) {
                       fetchNextPage();
                     }
                   }}
                   itemContent={(index, perfume) => {
-                    if (!perfume) return <div className="h-40 bg-slate-50 dark:bg-slate-800/20 rounded-3xl animate-pulse mb-6" />;
                     return (
                       <div className="pb-6">
-                        <PerfumeItem
-                          perfume={perfume}
-                          viewMode={viewMode}
-                          isAdmin={isAdmin}
-                          onEdit={editPerfume}
-                          onDelete={deletePerfume}
-                          index={index}
-                        />
-                      </div>
-                    );
-                  }}
-                  components={{
-                    Footer: () => (
-                      <div className="py-10 flex justify-center">
-                        {isFetchingNextPage && (
-                          <div className="flex items-center gap-3 px-6 py-3 bg-white/50 dark:bg-slate-900/50 backdrop-blur-md rounded-full border border-slate-100 dark:border-slate-800 shadow-sm">
-                            <div className="w-5 h-5 border-2 border-primary-500/30 border-t-primary-500 rounded-full animate-spin" />
-                            <span className="text-sm font-bold text-slate-500 dark:text-slate-400">{t('loading')}...</span>
-                          </div>
+                        {perfume ? (
+                          <PerfumeItem
+                            perfume={perfume}
+                            viewMode={viewMode}
+                            isAdmin={isAdmin}
+                            onEdit={editPerfume}
+                            onDelete={deletePerfume}
+                            index={index}
+                          />
+                        ) : (
+                          <ListSkeleton />
                         )}
                       </div>
-                    )
+                    );
                   }}
                 />
               ) : (
                 <VirtuosoGrid
                   useWindowScroll
+                  className="view-mode-grid"
                   data={perfumes}
                   totalCount={Math.min(totalCount, perfumes.length)}
-                  overscan={1200}
-                  increaseViewportBy={{ top: 800, bottom: 800 }}
-                  computeItemKey={(index, item) => item?.id || `idx-${index}`}
+                  overscan={5000}
+                  increaseViewportBy={{ top: 7800, bottom: 6500 }}
+                  initialItemCount={20}
+                  scrollSeekConfiguration={{
+                    enter: (velocity) => Math.abs(velocity) > 200,
+                    exit: (velocity) => Math.abs(velocity) < 60
+                  }}
+                  components={{
+                    ScrollSeekPlaceholder: () => (
+                      <GridSkeleton />
+                    )
+                  }}
+                  computeItemKey={(index) => index}
                   endReached={() => {
                     if (hasNextPage && !isFetchingNextPage) {
                       fetchNextPage();
@@ -550,8 +579,7 @@ export default function Dashboard({
                   }}
                   listClassName="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-8"
                   itemContent={(index, perfume) => {
-                    if (!perfume) return <div className="h-64 bg-slate-50 dark:bg-slate-800/20 rounded-3xl animate-pulse" />;
-                    return (
+                    return perfume ? (
                       <PerfumeItem
                         perfume={perfume}
                         viewMode={viewMode}
@@ -560,24 +588,22 @@ export default function Dashboard({
                         onDelete={deletePerfume}
                         index={index}
                       />
+                    ) : (
+                      <GridSkeleton />
                     );
-                  }}
-                  components={{
-                    Footer: () => (
-                      <div className="py-10 col-span-full flex justify-center">
-                        {isFetchingNextPage && (
-                          <div className="flex items-center gap-3 px-6 py-3 bg-white/50 dark:bg-slate-900/50 backdrop-blur-md rounded-full border border-slate-100 dark:border-slate-800 shadow-sm">
-                            <div className="w-5 h-5 border-2 border-primary-500/30 border-t-primary-500 rounded-full animate-spin" />
-                            <span className="text-sm font-bold text-slate-500 dark:text-slate-400">{t('loading')}...</span>
-                          </div>
-                        )}
-                      </div>
-                    )
                   }}
                 />
               )}
             </>
           )}
+        </div>
+      )}
+
+      {/* Sticky Bottom Loader */}
+      {isFetchingNextPage && (
+        <div className="sticky-loader-bottom">
+          <div className="w-5 h-5 border-2 border-primary-500/30 border-t-primary-500 rounded-full animate-spin" />
+          <span className="text-sm font-bold text-slate-600 dark:text-slate-300">{t('loading')}...</span>
         </div>
       )}
 
