@@ -39,8 +39,8 @@ const PerfumeItem = React.memo(({ perfume, viewMode, isAdmin, onEdit, onDelete, 
         
         {/* Description Row (New for List Mode) */}
         {perfume.description && (
-          <div className={`mt-3 px-1 ${i18n.language === 'ar' ? 'text-right' : 'text-left'}`}>
-            <p className="text-sm text-slate-950 dark:text-white font-bold leading-relaxed line-clamp-3 whitespace-pre-wrap">
+          <div className={`mt-3 px-1 description-scroll-area max-h-[100px] overflow-y-auto ${i18n.language === 'ar' ? 'text-right' : 'text-left'}`}>
+            <p className="text-sm text-slate-950 dark:text-white font-bold leading-relaxed whitespace-pre-wrap">
               {perfume.description}
             </p>
           </div>
@@ -160,7 +160,13 @@ const PerfumeItem = React.memo(({ perfume, viewMode, isAdmin, onEdit, onDelete, 
               {perfume.provider || 'RMI'}
             </span>
           </div>
-          {perfume.description && <p className={`text-sm text-slate-950 dark:text-white font-bold leading-relaxed line-clamp-3 whitespace-pre-wrap mt-3 ${i18n.language === 'ar' ? 'text-right' : 'text-left'}`}>{perfume.description}</p>}
+          {perfume.description && (
+            <div className={`mt-3 description-scroll-area max-h-[160px] overflow-y-auto pr-1 ${i18n.language === 'ar' ? 'text-right' : 'text-left'}`}>
+              <p className="text-sm text-slate-950 dark:text-white font-bold leading-relaxed whitespace-pre-wrap">
+                {perfume.description}
+              </p>
+            </div>
+          )}
         </div>
         <div className="mt-6 mb-6 grid grid-cols-2 gap-3">
           <div className="bg-slate-50 dark:bg-slate-800/40 rounded-[1.5rem] p-4 border border-slate-100 dark:border-slate-800/60 shadow-inner flex flex-col items-center justify-center text-center">

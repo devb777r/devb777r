@@ -24,6 +24,7 @@ export default function Dashboard({
   const PAGE_SIZE = 50;
 
   // Form states for ADD / EDIT
+  // Form states for ADD / EDIT
   const [formData, setFormData] = useState({
     id: null,
     name_en: '',
@@ -35,8 +36,23 @@ export default function Dashboard({
     seasons: [],
     gender: 'unisex',
     provider: 'RMI',
+    status: 'available',
     code: ''
   });
+
+  // Responsive column detection
+  const [itemsPerRow, setItemsPerRow] = useState(1);
+  useEffect(() => {
+    const updateSize = () => {
+      if (window.innerWidth < 768) setItemsPerRow(1);
+      else if (window.innerWidth < 1024) setItemsPerRow(3);
+      else if (window.innerWidth < 1280) setItemsPerRow(4);
+      else setItemsPerRow(5);
+    };
+    updateSize();
+    window.addEventListener('resize', updateSize);
+    return () => window.removeEventListener('resize', updateSize);
+  }, []);
 
   // Dialog state
   const [dialog, setDialog] = useState({ 
@@ -120,6 +136,18 @@ export default function Dashboard({
       return perfumes.length || 0;
     }
   }, [data, perfumes.length]);
+
+  // Helper to chunk perfumes into rows for the flexible grid
+  const perfumeRows = useMemo(() => {
+    if (viewMode === 'list') return perfumes;
+    const rows = [];
+    if (perfumes && perfumes.length > 0) {
+      for (let i = 0; i < perfumes.length; i += itemsPerRow) {
+        rows.push(perfumes.slice(i, i + itemsPerRow));
+      }
+    }
+    return rows;
+  }, [perfumes, viewMode, itemsPerRow]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -234,14 +262,14 @@ export default function Dashboard({
 
   // Skeleton Loaders for different view modes
   const ListSkeleton = () => (
-    <div className="luxury-card-container rounded-3xl p-5 staggered-item h-[240px]">
+    <div className="luxury-card-container rounded-3xl p-5 staggered-item h-[300px]">
       <div className="flex justify-between items-start mb-4">
         <div className="space-y-2 flex-1">
           <div className="h-6 bg-slate-200 dark:bg-slate-800 rounded-lg w-3/4"></div>
           <div className="h-4 bg-slate-100 dark:bg-slate-800/50 rounded-lg w-1/2"></div>
         </div>
       </div>
-      <div className="h-28 bg-slate-50 dark:bg-slate-800/30 rounded-2xl mb-4"></div>
+      <div className="h-32 bg-slate-50 dark:bg-slate-800/30 rounded-2xl mb-4"></div>
       <div className="flex gap-2">
         <div className="h-6 bg-slate-100 dark:bg-slate-800/50 rounded-full w-20"></div>
       </div>
@@ -249,14 +277,14 @@ export default function Dashboard({
   );
 
   const GridSkeleton = () => (
-    <div className="luxury-card-container rounded-[2rem] p-6 staggered-item h-[520px] flex flex-col">
+    <div className="luxury-card-container rounded-[2rem] p-6 staggered-item h-[640px] flex flex-col">
       <div className="flex justify-between items-start mb-4">
         <div className="space-y-3 flex-1">
           <div className="h-7 bg-slate-200 dark:bg-slate-800 rounded-lg w-[80%]"></div>
           <div className="h-5 bg-slate-100 dark:bg-slate-800/50 rounded-lg w-[60%]"></div>
         </div>
       </div>
-      <div className="h-64 bg-slate-50 dark:bg-slate-800/30 rounded-3xl mb-4"></div>
+      <div className="h-80 bg-slate-50 dark:bg-slate-800/30 rounded-3xl mb-4"></div>
       <div className="mt-auto flex gap-2">
         <div className="h-8 bg-slate-100 dark:bg-slate-800/50 rounded-xl w-24"></div>
         <div className="h-8 bg-slate-100 dark:bg-slate-800/50 rounded-xl w-24 ml-auto"></div>
@@ -554,42 +582,51 @@ export default function Dashboard({
                   }}
                 />
               ) : (
-                <VirtuosoGrid
+                <Virtuoso
                   useWindowScroll
                   className="view-mode-grid"
-                  data={perfumes}
-                  totalCount={Math.min(totalCount, perfumes.length)}
-                  overscan={8000}
-                  increaseViewportBy={{ top: 8000, bottom: 8000 }}
-                  initialItemCount={40}
+                  data={perfumeRows}
+                  totalCount={perfumeRows.length}
+                  overscan={5000}
+                  increaseViewportBy={{ top: 2000, bottom: 2000 }}
+                  initialItemCount={20}
                   scrollSeekConfiguration={{
                     enter: (velocity) => Math.abs(velocity) > 1000,
                     exit: (velocity) => Math.abs(velocity) < 100
                   }}
                   components={{
                     ScrollSeekPlaceholder: () => (
-                      <GridSkeleton />
+                      <div className="grid gap-4 pb-8" style={{ gridTemplateColumns: `repeat(${itemsPerRow}, minmax(0, 1fr))` }}>
+                        {Array(itemsPerRow).fill(0).map((_, i) => (
+                          <GridSkeleton key={i} />
+                        ))}
+                      </div>
                     )
                   }}
-                  computeItemKey={(index) => index}
                   endReached={() => {
                     if (hasNextPage && !isFetchingNextPage) {
                       fetchNextPage();
                     }
                   }}
-                  listClassName="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-8"
-                  itemContent={(index, perfume) => {
-                    return perfume ? (
-                      <PerfumeItem
-                        perfume={perfume}
-                        viewMode={viewMode}
-                        isAdmin={isAdmin}
-                        onEdit={editPerfume}
-                        onDelete={deletePerfume}
-                        index={index}
-                      />
-                    ) : (
-                      <GridSkeleton />
+                  itemContent={(rowIndex, rowItems) => {
+                    return (
+                      <div className="grid gap-4 pb-8" style={{ gridTemplateColumns: `repeat(${itemsPerRow}, minmax(0, 1fr))` }}>
+                        {rowItems && Array.isArray(rowItems) && rowItems.map((perfume, idx) => (
+                          perfume ? (
+                            <PerfumeItem
+                              key={perfume.id}
+                              perfume={perfume}
+                              viewMode="grid"
+                              isAdmin={isAdmin}
+                              onEdit={editPerfume}
+                              onDelete={deletePerfume}
+                              index={rowIndex * itemsPerRow + idx}
+                            />
+                          ) : (
+                            <GridSkeleton key={`row-${rowIndex}-skel-${idx}`} />
+                          )
+                        ))}
+                      </div>
                     );
                   }}
                 />

@@ -120,23 +120,34 @@
 }
 
 .view-mode-list .staggered-item {
-  height: 240px;
-  min-height: 240px;
-  max-height: 240px;
+  min-height: 220px;
 }
 
 .view-mode-grid .staggered-item {
-  height: 520px;
-  min-height: 520px;
-  max-height: 520px;
+  min-height: 440px;
 }
 
-/* Line Clamping for Descriptions */
-.line-clamp-3 {
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;  
-  overflow: hidden;
+/* Custom Scrollbar for Luxury Descriptions */
+.description-scroll-area {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(var(--primary-rgb), 0.2) transparent;
+}
+
+.description-scroll-area::-webkit-scrollbar {
+  width: 4px;
+}
+
+.description-scroll-area::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.description-scroll-area::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.1);
+  border-radius: 20px;
+}
+
+.dark .description-scroll-area::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.1);
 }
 
 @keyframes fadeIn {
